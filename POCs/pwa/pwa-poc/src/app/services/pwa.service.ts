@@ -10,10 +10,8 @@ export class PwaService {
     private deferredPromptEvent: any;
     public isAppInstallable: Observable<boolean>;
 
-    constructor(private swUpdate: SwUpdate,
-                @Inject(DOCUMENT) private document,
-                private appRef: ApplicationRef) {
-                    this.isAppInstallable = observableOf(false);
+    constructor(private swUpdate: SwUpdate, @Inject(DOCUMENT) private document: Document, private appRef: ApplicationRef) {
+        this.isAppInstallable = observableOf(false);
     }
 
     public isPwaSupported(): boolean {

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { PwaService } from './pwa/pwa.service';
+import { Inject, Component, OnInit } from '@angular/core';
+import { PwaService } from './services/pwa.service';
+import {ManifestService} from './services/manifest.service';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +10,15 @@ import { PwaService } from './pwa/pwa.service';
 export class AppComponent implements OnInit {
   title = 'pwa-poc!!!';
 
-  constructor(public pwaService: PwaService) {
+  constructor(public pwaService: PwaService, private manifestService: ManifestService) {
   }
 
   ngOnInit(): void {
     this.pwaService.subscribeToPromt();
     this.pwaService.subscribeToCheckForUpdates();
     this.pwaService.subscribeToManageNewAvailableVersions();
+
+    this.manifestService.injectManifest();
   }
 
   public showAddHomePagePopup() {

@@ -5,7 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { PwaService } from './pwa/pwa.service';
+import { PwaService } from './services/pwa.service';
+import { ManifestService } from './services/manifest.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { PwaService } from './pwa/pwa.service';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
-    PwaService
+    PwaService,
+    ManifestService
   ],
   bootstrap: [AppComponent]
 })
