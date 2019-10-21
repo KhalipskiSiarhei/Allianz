@@ -3,19 +3,22 @@ import { DOCUMENT } from '@angular/common';
 import { SwUpdate } from '@angular/service-worker';
 import { fromEvent, Subscription, Observable, Subscriber, of as observableOf, timer, interval, concat } from 'rxjs';
 import { take, first } from 'rxjs/operators';
+import { IdentityConfigService } from './identity-config.service';
 
 @Injectable()
+// The idea of the service is got from this article:
+// https://medium.com/@alshakero/how-to-setup-your-web-app-manifest-dynamically-using-javascript-f7fbee899a61
 export class ManifestService {
-    constructor(@Inject(DOCUMENT) private document: Document) {
+    constructor(private identifyConfigService: IdentityConfigService, @Inject(DOCUMENT) private document: Document) {
     }
 
     public injectManifest() {
-        let manifestElement = this.document.getElementById('manifest.webmanifest');
+        const manifestElement = this.document.getElementById('manifest.webmanifest');
 
         if (manifestElement) {
             const jsonManifest = {
-                name: 'pwa-poc',
-                short_name: 'pwa-poc',
+                name: this.identifyConfigService.policyId,
+                short_name: this.identifyConfigService.policyId,
                 theme_color: '#1976d2',
                 background_color: '#fafafa',
                 display: 'standalone',
@@ -64,23 +67,31 @@ export class ManifestService {
                   }
                 ]
               };
-              let stringManifest = JSON.stringify(jsonManifest);
-              const blobManifest = new Blob([stringManifest], {type: 'application/json'});
-              const urlManifest = URL.createObjectURL(blobManifest);
+            const stringManifest = JSON.stringify(jsonManifest);
+            const blobManifest = new Blob([stringManifest], {type: 'application/json'});
+            const urlManifest = URL.createObjectURL(blobManifest);
 
-              manifestElement.setAttribute('href', urlManifest);
+            manifestElement.setAttribute('href', urlManifest);
         }
     }
 
     private getStartUrl() {
-      return this.document.defaultView.location.href;
+      const origin = this.document.defaultView.location.origin;
+      const baseHref = this.identifyConfigService.baseHref;
+      const startUrl = origin + baseHref + 'home';
+
+      return startUrl;
     }
 
     private getScope() {
-      return this.document.defaultView.location.href;
+      const origin = this.document.defaultView.location.origin;
+      const baseHref = this.identifyConfigService.baseHref;
+      const scope = origin + baseHref;
+
+      return scope;
     }
 
     private getAssetUrl(assetUrl: string) {
-      return this.document.defaultView.location.href + assetUrl;
+      return this.document.defaultView.location.origin + assetUrl;
     }
 }
