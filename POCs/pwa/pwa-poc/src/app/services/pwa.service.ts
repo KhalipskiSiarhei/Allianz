@@ -49,7 +49,7 @@ export class PwaService {
         }
     }
 
-    public subscribeToCheckForUpdates() {
+    public subscribeToCheckForUpdates(): Subscription {
         try {
             if (this.isPwaSupported()) {
                 if (this.isPwaSupported()) {
@@ -73,7 +73,7 @@ export class PwaService {
         }
     }
 
-    public subscribeToManageNewAvailableVersions() {
+    public subscribeToManageNewAvailableVersions(): Subscription {
         try {
             if (this.isPwaSupported()) {
                 console.log('Start processing subscribeToManageNewAvailableVersions');
@@ -93,53 +93,43 @@ export class PwaService {
         }
     }
 
-    public subscribeToAppInstalled() {
+    public subscribeToAppInstalled(): Subscription {
         try {
             if (this.isPwaSupported()) {
                 return fromEvent(document.defaultView, 'appinstalled')
                     .subscribe(event => {
-                        console.log('Start processing appinstalled');
-                        this.document.defaultView.open('', '_self').close();
-                        console.log('appinstalled processed');
+                        console.log('appinstalled!!!');
                     });
             } else {
                 console.log('PWA is not supported, no subscription to be notified when app was installed');
                 return Subscription.EMPTY;
             }
         } catch (ex) {
-            console.error('Error of subscribing to subscribeToPromt. It is used EMPTY subscription as fallback', ex);
+            console.error('Error of subscribing to appinstalled. It is used EMPTY subscription as fallback', ex);
             return Subscription.EMPTY;
         }
     }
 
     // Simple implementation to add banner to home screen if PWA is supported via modal dialog
     public showAddHomePagePopup() {
-        if (this.isPwaSupported()) {
-            if (this.deferredPromptEvent) {
-                if (confirm('Add app to the Home screen?')) {
-                    this.addToHomePage();
-                }
-            }
+        if (this.isPwaSupported() && this.deferredPromptEvent && confirm('Add app to the Home screen?')) {
+            this.deferredPromptEvent.prompt();
+            // Wait for the user to respond to the prompt
+            this.deferredPromptEvent.userChoice
+                .then(choiceResult => {
+                    if (choiceResult.outcome === 'accepted') {
+                        // TODO: Here it is worth tracking user's actions in GA to have ration of accepted A2HS suggestions
+                        console.log('User accepted the A2HS prompt!!!');
+                    } else {
+                        // TODO: Here it is worth tracking user's actions in GA to have ration of declined A2HS suggestions
+                        console.log('User dismissed the A2HS prompt...');
+                    }
+                    // Deferred event can be used once only. For this reason as soon as user accepted it is set to null
+                    this.deferredPromptEvent = null;
+                }).catch(error => {
+                    this.deferredPromptEvent = null;
+                    console.error('Error of accepting A2HS...', error);
+                });
         }
-    }
-
-    // This method add banner to home screen
-    private addToHomePage() {
-        this.deferredPromptEvent.prompt();
-        // Wait for the user to respond to the prompt
-        this.deferredPromptEvent.userChoice
-            .then(choiceResult => {
-                if (choiceResult.outcome === 'accepted') {
-                    // TODO: Here it is worth tracking user's actions in GA to have ration of accepted A2HS suggestions
-                    console.log('User accepted the A2HS prompt!!!');
-                } else {
-                    // TODO: Here it is worth tracking user's actions in GA to have ration of declined A2HS suggestions
-                    console.log('User dismissed the A2HS prompt...');
-                }
-                // Deferred event can be used once only. For this reason as soon as user accepted it is set to null
-                this.deferredPromptEvent = null;
-            }).catch(error => {
-                console.error('Error of accepting A2HS...', error);
-            });
     }
 }
