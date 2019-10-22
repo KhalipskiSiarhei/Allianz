@@ -11,8 +11,10 @@ import { PwaService } from './services/pwa.service';
 import { ManifestService } from './services/manifest.service';
 
 export function getBaseLocation(identityConfigService: IdentityConfigService, document: Document) {
-  identityConfigService.init(document);
-  return identityConfigService.baseHref;
+  if (identityConfigService.init(document)) {
+    return identityConfigService.baseHref;
+  }
+  return '/';
 }
 
 @NgModule({

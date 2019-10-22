@@ -49,11 +49,11 @@ export class PwaService {
             if (this.isPwaSupported()) {
                 if (this.isPwaSupported()) {
                     console.log('subscribeToCheckForUpdates');
-                    // Initialize to check for updates every 1h
-                    const refreshPeriod = 1000 * 60 * 60;
+                    // Initialize to check for updates every 10s
+                    const refreshPeriod = 1000 * 10;
                     // Allow the app to stabilize first, before starting polling for updates with `interval()`.
                     const appIsStable$ = this.appRef.isStable.pipe(first(isStable => isStable === true));
-                    const updateInterval$ = interval(10 * 1000);
+                    const updateInterval$ = interval(refreshPeriod);
                     const updateIntervalOnceAppIsStable$ = concat(appIsStable$, updateInterval$);
 
                     return updateIntervalOnceAppIsStable$.subscribe(() => this.swUpdate.checkForUpdate());

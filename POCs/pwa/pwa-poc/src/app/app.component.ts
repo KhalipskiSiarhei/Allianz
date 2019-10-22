@@ -1,6 +1,8 @@
 import { Inject, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PwaService } from './services/pwa.service';
 import {ManifestService} from './services/manifest.service';
+import { IdentityConfigService } from './services/identity-config.service';
 
 @Component({
   selector: 'app-root',
@@ -10,18 +12,29 @@ import {ManifestService} from './services/manifest.service';
 export class AppComponent implements OnInit {
   title = 'pwa-poc!!!';
 
-  constructor(public pwaService: PwaService, private manifestService: ManifestService) {
+  constructor(private router: Router,
+              public pwaService: PwaService,
+              private manifestService: ManifestService,
+              private identityConfigService: IdentityConfigService) {
   }
 
   ngOnInit(): void {
-    this.pwaService.subscribeToPromt();
-    this.pwaService.subscribeToCheckForUpdates();
-    this.pwaService.subscribeToManageNewAvailableVersions();
+    if (this.identityConfigService.initialized) {
+      this.pwaService.subscribeToPromt();
+      this.pwaService.subscribeToCheckForUpdates();
+      this.pwaService.subscribeToManageNewAvailableVersions();
 
-    this.manifestService.injectManifest();
+      this.manifestService.injectManifest();
+    } else {
+      this.router.navigate(['/not-found']);
+    }
   }
 
   public showAddHomePagePopup() {
     this.pwaService.showAddHomePagePopup();
+  }
+
+  public get isIdentityConfigInitialized() {
+    return this.identityConfigService.initialized;
   }
 }

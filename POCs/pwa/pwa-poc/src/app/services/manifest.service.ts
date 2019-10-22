@@ -13,11 +13,13 @@ export class ManifestService {
     }
 
     public injectManifest() {
+      if (this.identifyConfigService.initialized) {
         const manifestElement = this.document.getElementById('manifest.webmanifest');
 
         if (manifestElement) {
             const jsonManifest = {
-                name: this.identifyConfigService.policyId,
+                name: this.identifyConfigService.vendor + '-' +
+                 this.identifyConfigService.country + '-' + this.identifyConfigService.policyId,
                 short_name: this.identifyConfigService.policyId,
                 theme_color: '#1976d2',
                 background_color: '#fafafa',
@@ -73,6 +75,7 @@ export class ManifestService {
 
             manifestElement.setAttribute('href', urlManifest);
         }
+      }
     }
 
     private getStartUrl() {

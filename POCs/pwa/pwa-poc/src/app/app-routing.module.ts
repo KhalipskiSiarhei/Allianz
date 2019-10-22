@@ -15,13 +15,17 @@ const routes: Routes = [
     loadChildren: () => import('./features/home/home.module').then(mod => mod.HomeModule)
   },
   {
+    path: 'not-found',
+    loadChildren: () => import('./features/not-found/not-found.module').then(mod => mod.NotFoundModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: 'not-found',
   }
 ];
 

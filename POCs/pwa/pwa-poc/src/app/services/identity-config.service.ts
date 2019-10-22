@@ -10,24 +10,36 @@ export class IdentityConfigService {
     constructor() {
     }
 
+    public get initialized(): boolean {
+        return this.initSrc;
+    }
+
     public get vendor(): string {
-        this.ensureInitSuccessed();
-        return this.vendorSrc;
+        if (this.initialized) {
+            return this.vendorSrc;
+        }
+        return null;
     }
 
     public get country(): string {
-        this.ensureInitSuccessed();
-        return this.countrySrc;
+        if (this.initialized) {
+            return this.countrySrc;
+        }
+        return null;
     }
 
     public get policyId(): string {
-        this.ensureInitSuccessed();
-        return this.policyIdSrc;
+        if (this.initialized) {
+            return this.policyIdSrc;
+        }
+        return null;
     }
 
     public get baseHref(): string {
-        this.ensureInitSuccessed();
-        return '/' + this.vendor + '/' + this.country + '/' + this.policyIdSrc + '/';
+        if (this.initialized) {
+            return '/' + this.vendor + '/' + this.country + '/' + this.policyIdSrc + '/';
+        }
+        return null;
     }
 
     public init(document: Document) {
@@ -39,13 +51,9 @@ export class IdentityConfigService {
           this.policyIdSrc = paths[2];
           this.initSrc = true;
         } else {
-            throw new Error('IdentityConfisService cant be initialized with the current path=' + document.location.pathname);
+            this.initSrc = false;
         }
-    }
 
-    private ensureInitSuccessed() {
-        if (!this.initSrc) {
-            throw new Error('IdentityConfirService was not initialized...');
-        }
+        return this.initSrc;
     }
 }
