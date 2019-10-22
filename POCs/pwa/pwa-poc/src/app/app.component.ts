@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
       this.pwaService.subscribeToPromt();
       this.pwaService.subscribeToCheckForUpdates();
       this.pwaService.subscribeToManageNewAvailableVersions();
+      this.pwaService.subscribeToAppInstalled();
 
       this.manifestService.injectManifest();
     } else {

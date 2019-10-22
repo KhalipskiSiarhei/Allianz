@@ -1,9 +1,11 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to PWA POC!!!
+    Welcome to PWA POC!
   </h1>
-  <button *ngIf="pwaService.isPwaSupported() && (pwaService.isAppInstallable | async)" (click)="showAddHomePagePopup()">Trigger event to add app to the home screen</button>
+  <p *ngIf="pwaService.isPwaSupported() && (pwaService.isAppInstallable | async)">
+    <button (click)="showAddHomePagePopup()">Install PWA!</button>
+  </p>
 </div>
 <nav *ngIf="isIdentityConfigInitialized">
   <a routerLink="/home" routerLinkActive="active">Home</a>&nbsp;

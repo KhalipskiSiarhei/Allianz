@@ -16,8 +16,11 @@ export class PwaService {
 
     public isPwaSupported(): boolean {
         try {
-            return this.swUpdate && this.swUpdate.isEnabled;
-        } catch {
+            const isPwaSupported = this.swUpdate && this.swUpdate.isEnabled && this.document.location.protocol === 'https:';
+            console.log(`IsPwaSupported: ${isPwaSupported}`);
+            return isPwaSupported;
+        } catch (ex) {
+            console.error('IsPwaSupported detection error. It is used false as fallback', ex);
             return false;
         }
     }
@@ -27,15 +30,17 @@ export class PwaService {
             if (this.isPwaSupported()) {
                 return fromEvent(document.defaultView, 'beforeinstallprompt')
                     .subscribe(event => {
+                        console.log('Start processing beforeinstallprompt');
                         // Prevent Chrome 67 and earlier from automatically showing the prompt
                         event.preventDefault();
 
                         // Stash the event so it can be triggered later.
                         this.deferredPromptEvent = event;
                         this.isAppInstallable = observableOf(true);
-                        console.log('beforeinstallprompt!');
+                        console.log('Beforeinstallprompt processed');
                     });
             } else {
+                console.log('PWA is not supported, no subscription to prompt');
                 return Subscription.EMPTY;
             }
         } catch (ex) {
@@ -48,7 +53,7 @@ export class PwaService {
         try {
             if (this.isPwaSupported()) {
                 if (this.isPwaSupported()) {
-                    console.log('subscribeToCheckForUpdates');
+                    console.log('Start processing subscribeToCheckForUpdates');
                     // Initialize to check for updates every 10s
                     const refreshPeriod = 1000 * 10;
                     // Allow the app to stabilize first, before starting polling for updates with `interval()`.
@@ -58,6 +63,7 @@ export class PwaService {
 
                     return updateIntervalOnceAppIsStable$.subscribe(() => this.swUpdate.checkForUpdate());
                 } else {
+                    console.log('PWA is not supported, no checks for updates');
                     return Subscription.EMPTY;
                 }
             }
@@ -70,7 +76,7 @@ export class PwaService {
     public subscribeToManageNewAvailableVersions() {
         try {
             if (this.isPwaSupported()) {
-                console.log('subscribeToManageNewAvailableVersions');
+                console.log('Start processing subscribeToManageNewAvailableVersions');
                 // Initialize the logic to inform user about availabele updates for the webapp
                 return this.swUpdate.available.subscribe(event => {
                     if (confirm('New version is available. Update?')) {
@@ -78,10 +84,30 @@ export class PwaService {
                     }
                 });
             } else {
+                console.log('PWA is not supported, no subscription tp check available versions');
                 return Subscription.EMPTY;
             }
         } catch (ex) {
             console.error('Error of subscribing to subscribeToManageNewAvailableVersions. It is used EMPTY subscription as fallback', ex);
+            return Subscription.EMPTY;
+        }
+    }
+
+    public subscribeToAppInstalled() {
+        try {
+            if (this.isPwaSupported()) {
+                return fromEvent(document.defaultView, 'appinstalled')
+                    .subscribe(event => {
+                        console.log('Start processing appinstalled');
+                        this.document.defaultView.open('', '_self').close();
+                        console.log('appinstalled processed');
+                    });
+            } else {
+                console.log('PWA is not supported, no subscription to be notified when app was installed');
+                return Subscription.EMPTY;
+            }
+        } catch (ex) {
+            console.error('Error of subscribing to subscribeToPromt. It is used EMPTY subscription as fallback', ex);
             return Subscription.EMPTY;
         }
     }
@@ -95,7 +121,6 @@ export class PwaService {
                 }
             }
         }
-        return Subscription.EMPTY;
     }
 
     // This method add banner to home screen
@@ -107,12 +132,12 @@ export class PwaService {
                 if (choiceResult.outcome === 'accepted') {
                     // TODO: Here it is worth tracking user's actions in GA to have ration of accepted A2HS suggestions
                     console.log('User accepted the A2HS prompt!!!');
-                    // Deferred event can be used once only. For this reason as soon as user accepted it is set to null
-                    this.deferredPromptEvent = null;
                 } else {
                     // TODO: Here it is worth tracking user's actions in GA to have ration of declined A2HS suggestions
                     console.log('User dismissed the A2HS prompt...');
                 }
+                // Deferred event can be used once only. For this reason as soon as user accepted it is set to null
+                this.deferredPromptEvent = null;
             }).catch(error => {
                 console.error('Error of accepting A2HS...', error);
             });
