@@ -18,8 +18,8 @@ export class ManifestService {
 
         if (manifestElement) {
             const jsonManifest = {
-                name: this.identifyConfigService.vendor + '-' +
-                 this.identifyConfigService.country + '-' + this.identifyConfigService.policyId,
+                gcm_sender_id: "103953800507",
+                name: `${this.identifyConfigService.vendor}-${this.identifyConfigService.country}-${this.identifyConfigService.policyId}`,
                 short_name: this.identifyConfigService.policyId,
                 theme_color: '#1976d2',
                 background_color: '#fafafa',
@@ -81,7 +81,7 @@ export class ManifestService {
     private getStartUrl() {
       const origin = this.document.defaultView.location.origin;
       const baseHref = this.identifyConfigService.baseHref;
-      const startUrl = origin + baseHref + 'home';
+      const startUrl = `${origin}${baseHref}home/?utm_source=homescreen`;
 
       return startUrl;
     }
@@ -89,12 +89,12 @@ export class ManifestService {
     private getScope() {
       const origin = this.document.defaultView.location.origin;
       const baseHref = this.identifyConfigService.baseHref;
-      const scope = origin + baseHref;
+      const scope = `${origin}${baseHref}`;
 
       return scope;
     }
 
     private getAssetUrl(assetUrl: string) {
-      return this.document.defaultView.location.origin + assetUrl;
+      return `${this.document.defaultView.location.origin}${assetUrl}`;
     }
 }
