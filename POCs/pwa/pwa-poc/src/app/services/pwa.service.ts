@@ -2,7 +2,7 @@ import { Injectable, Inject, ApplicationRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { SwUpdate } from '@angular/service-worker';
 import { fromEvent, Subscription, Observable, Subscriber, of as observableOf, timer, interval, concat } from 'rxjs';
-import { take, first } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 // Browser specific implementation for PWA service. Can interact with the system even to promt user to install the app
 @Injectable()
@@ -10,7 +10,9 @@ export class PwaService {
     private deferredPromptEvent: any;
     public isAppInstallable: Observable<boolean>;
 
-    constructor(private swUpdate: SwUpdate, @Inject(DOCUMENT) private document: Document, private appRef: ApplicationRef) {
+    constructor(private swUpdate: SwUpdate,
+                @Inject(DOCUMENT) private document: Document,
+                private appRef: ApplicationRef) {
         this.isAppInstallable = observableOf(false);
     }
 
@@ -126,6 +128,7 @@ export class PwaService {
                     }
                     // Deferred event can be used once only. For this reason as soon as user accepted it is set to null
                     this.deferredPromptEvent = null;
+                    this.isAppInstallable = observableOf(false);
                 }).catch(error => {
                     this.deferredPromptEvent = null;
                     console.error('Error of accepting A2HS...', error);
