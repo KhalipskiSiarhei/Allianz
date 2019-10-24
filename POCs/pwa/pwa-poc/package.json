@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "create-sw": "concat dist/pwa-poc/ngsw-worker.js fcm-worker.js -o dist/pwa-poc/ngsw-fcm-worker.js"
+    "create-worker": "concat ./dist/pwa-poc/ngsw-worker.js ./src/fcm-worker.js -o ./dist/pwa-poc/ngsw-fcm-worker.js"
   },
   "private": true,
   "dependencies": {

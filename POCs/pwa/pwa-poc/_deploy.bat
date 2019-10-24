@@ -1,4 +1,3 @@
-call ng build --prod
-call copy .\dist\pwa-poc\index.html .\dist\pwa-poc\200.html
-call surge .\dist\pwa-poc\ allianz.surge.sh
+call _build.bat
+call surge .\dist\pwa-poc\ allianz2.surge.sh
 pause
