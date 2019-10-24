@@ -24,7 +24,7 @@ export function getBaseLocation(identityConfigService: IdentityConfigService, do
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-fcm-worker.js', { enabled: environment.production }),
   ],
   providers: [
     IdentityConfigService,
