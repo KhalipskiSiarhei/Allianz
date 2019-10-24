@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.identityConfigService.initialized) {
+    if (this.isIdentityConfigInitialized) {
       this.pwaService.subscribeToPromt();
       this.pwaService.subscribeToCheckForUpdates();
       this.pwaService.subscribeToManageNewAvailableVersions();
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
 
       this.manifestService.injectManifest();
     } else {
-      this.router.navigate(['/not-found']);
+      // this.router.navigate(['/not-found']);
     }
   }
 
@@ -36,6 +36,6 @@ export class AppComponent implements OnInit {
   }
 
   public get isIdentityConfigInitialized() {
-    return this.identityConfigService.initialized;
+    return !this.identityConfigService.initialized;
   }
 }
