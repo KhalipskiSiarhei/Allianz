@@ -19,7 +19,6 @@ export class PwaService {
     public isPwaSupported(): boolean {
         try {
             const isPwaSupported = this.swUpdate && this.swUpdate.isEnabled && this.document.location.protocol === 'https:';
-            console.log(`IsPwaSupported: ${isPwaSupported}`);
             return isPwaSupported;
         } catch (ex) {
             console.error('IsPwaSupported detection error. It is used false as fallback', ex);

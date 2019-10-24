@@ -23,7 +23,8 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest",
-              "src/fcm-worker.js"
+              "src/fcm-worker.js",
+              "src/ngsw-fcm-worker.js"
             ],
             "styles": [
               "src/styles.css"

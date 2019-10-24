@@ -9,9 +9,22 @@ import { environment } from '../environments/environment';
 import { IdentityConfigService } from './services/identity-config.service';
 import { PwaService } from './services/pwa.service';
 import { ManifestService } from './services/manifest.service';
+// import { MessagingService } from './services/messaging.service';
 
-export function getBaseLocation(identityConfigService: IdentityConfigService, document: Document) {
+export function initApp(identityConfigService: IdentityConfigService, manifestService: ManifestService, document: Document) {
   if (identityConfigService.init(document)) {
+    manifestService.injectManifest();
+  }
+
+  return () => {
+    return new Promise((resolve) => {
+      resolve();
+    });
+  };
+}
+
+export function getBaseLocation(identityConfigService: IdentityConfigService) {
+  if (identityConfigService.initialized) {
     return identityConfigService.baseHref;
   }
   return '/';
@@ -28,13 +41,20 @@ export function getBaseLocation(identityConfigService: IdentityConfigService, do
   ],
   providers: [
     IdentityConfigService,
+    PwaService,
+    ManifestService,
+    // MessagingService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initApp,
+      deps: [IdentityConfigService, ManifestService, DOCUMENT],
+      multi: true
+    },
     {
       provide: APP_BASE_HREF,
       useFactory: getBaseLocation,
-      deps: [IdentityConfigService, DOCUMENT]
+      deps: [IdentityConfigService]
     },
-    PwaService,
-    ManifestService
   ],
   bootstrap: [AppComponent]
 })

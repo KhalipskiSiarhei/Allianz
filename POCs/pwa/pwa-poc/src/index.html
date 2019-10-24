@@ -3,7 +3,17 @@
 <head>
   <meta charset="utf-8">
   <title>PwaPoc</title>
-  <base href="/">
+  <base id="baseHref" href="/">
+  <!-- <script>
+    let baseHrefElement = document.getElementById('baseHref');
+    let pathName = location.pathname;
+    let pathNameParts = location.pathname.split('/').filter(p => !!p);
+
+    if (pathNameParts.length >= 3) {
+      let baseHref = `/${pathNameParts[0]}/${pathNameParts[1]}/${pathNameParts[2]}`;
+      baseHrefElement.setAttribute('href', baseHref);
+    }
+  </script> -->
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">

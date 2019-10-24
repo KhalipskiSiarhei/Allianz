@@ -95,6 +95,7 @@ export class ManifestService {
     }
 
     private getAssetUrl(assetUrl: string) {
-      return `${this.document.defaultView.location.origin}${assetUrl}`;
+      const origin = this.document.defaultView.location.origin;
+      return `${origin}${assetUrl}`;
     }
 }
