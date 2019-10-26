@@ -80,7 +80,7 @@ export class PwaService {
                 console.log('Start processing subscribeToManageNewAvailableVersions');
                 // Initialize the logic to inform user about availabele updates for the webapp
                 return this.swUpdate.available.subscribe(event => {
-                    if (confirm('New version is available. Update?')) {
+                    if (confirm(`New version ${JSON.stringify(event.available.appData)} is available. Update?`)) {
                         this.swUpdate.activateUpdate().then(() => document.location.reload());
                     }
                 });

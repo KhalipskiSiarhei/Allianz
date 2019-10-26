@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { PwaService } from './services/pwa.service';
 import { IdentityConfigService } from './services/identity-config.service';
-// import { MessagingService } from './services/messaging.service';
-import { Subscription } from 'rxjs';
+import { MessagingService } from './services/messaging.service';
+import { Subscription, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +11,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'pwa-poc!!!';
+  public title = 'pwa-poc!!!';
+  public message;
   private subscriptions: Subscription[] = [];
 
   constructor(private router: Router,
               public pwaService: PwaService,
               private identityConfigService: IdentityConfigService,
-              /*private messagingService: MessagingService*/) {
+              private messagingService: MessagingService) {
   }
 
   ngOnInit(): void {
@@ -26,7 +27,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.pwaService.subscribeToCheckForUpdates());
       this.subscriptions.push(this.pwaService.subscribeToManageNewAvailableVersions());
       this.subscriptions.push(this.pwaService.subscribeToAppInstalled());
-      // this.subscriptions.push(this.messagingService.subscribeToMessaging());
+      this.subscriptions.push(this.messagingService.subscribeToMessaging());
+
+      this.messagingService.requestPermission(this.identityConfigService.id);
+      this.subscriptions.push(this.messagingService.receiveMessage());
+      this.message = this.messagingService.currentMessage;
     } else {
       this.router.navigate(['/not-found']);
     }

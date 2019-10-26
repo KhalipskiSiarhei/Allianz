@@ -9,7 +9,11 @@ import { environment } from '../environments/environment';
 import { IdentityConfigService } from './services/identity-config.service';
 import { PwaService } from './services/pwa.service';
 import { ManifestService } from './services/manifest.service';
-// import { MessagingService } from './services/messaging.service';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { MessagingService } from './services/messaging.service';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 export function initApp(identityConfigService: IdentityConfigService, manifestService: ManifestService, document: Document) {
   if (identityConfigService.init(document)) {
@@ -37,13 +41,17 @@ export function getBaseLocation(identityConfigService: IdentityConfigService) {
   imports: [
     BrowserModule,
     AppRoutingModule,
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    AngularFireMessagingModule,
+    AngularFireModule.initializeApp(environment.firebase),
     ServiceWorkerModule.register('ngsw-fcm-worker.js', { enabled: environment.production }),
   ],
   providers: [
     IdentityConfigService,
     PwaService,
     ManifestService,
-    // MessagingService,
+    MessagingService,
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,

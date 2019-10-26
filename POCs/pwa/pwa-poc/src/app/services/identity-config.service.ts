@@ -37,7 +37,14 @@ export class IdentityConfigService {
 
     public get baseHref(): string {
         if (this.initialized) {
-            return '/' + this.vendor + '/' + this.country + '/' + this.policyIdSrc + '/';
+            return `/${this.vendor}/${this.country}/${this.policyIdSrc}/`;
+        }
+        return null;
+    }
+
+    public get id(): string {
+        if (this.initialized) {
+            return `${this.vendor}:${this.country}:${this.policyIdSrc}`;
         }
         return null;
     }

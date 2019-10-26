@@ -24,6 +24,7 @@ export class ManifestService {
                 theme_color: '#1976d2',
                 background_color: '#fafafa',
                 display: 'standalone',
+                description: 'Alianz PWA app',
                 scope: this.getScope(),
                 start_url: this.getStartUrl(),
                 icons: [
