@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireMessaging } from '@angular/fire/messaging';
-import { take } from 'rxjs/operators';
+import { take, mergeMap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { firebase } from '@firebase/app';
 import '@firebase/messaging';
@@ -11,6 +11,7 @@ import '@firebase/messaging';
 export class MessagingService {
 
   public currentMessage = new BehaviorSubject(null);
+  public token: string;
 
   public get isSupported(): boolean {
     return firebase && firebase.messaging.isSupported();
@@ -20,6 +21,7 @@ export class MessagingService {
     private angularFireDB: AngularFireDatabase,
     private angularFireAuth: AngularFireAuth,
     private angularFireMessaging: AngularFireMessaging) {
+      this.token = '';
     }
 
   public subscribeToMessaging() {
@@ -40,12 +42,24 @@ export class MessagingService {
     this.angularFireMessaging.requestToken.subscribe(
       (token) => {
         console.log(`Request permission for userId=${userId}, got toke=${token}`);
+        this.token = token;
         this.updateToken(userId, token);
       },
       (err) => {
-        console.error('Unable to get permission to notify', err);
+        alert(`Unable to get permission to notify; error= ${err}`);
       }
     );
+  }
+
+  public deleteToken() {
+    this.angularFireMessaging.getToken
+      .pipe(mergeMap(token => this.angularFireMessaging.deleteToken(token)))
+      .subscribe(
+        (token) => {
+          this.token = null;
+          console.log('Deleted!');
+        },
+      );
   }
 
   /**
@@ -72,7 +86,12 @@ export class MessagingService {
     return this.angularFireMessaging.messages.subscribe(
       (payload) => {
         console.log('New message received', payload);
+        // alert(payload);
         this.currentMessage.next(payload);
       });
+  }
+
+  public test() {
+    this.currentMessage.next(Date.now().toString());
   }
 }

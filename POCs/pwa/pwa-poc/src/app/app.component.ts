@@ -18,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               public pwaService: PwaService,
               private identityConfigService: IdentityConfigService,
-              private messagingService: MessagingService) {
+              public messagingService: MessagingService) {
   }
 
   ngOnInit(): void {
@@ -27,10 +27,10 @@ export class AppComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.pwaService.subscribeToCheckForUpdates());
       this.subscriptions.push(this.pwaService.subscribeToManageNewAvailableVersions());
       this.subscriptions.push(this.pwaService.subscribeToAppInstalled());
-      this.subscriptions.push(this.messagingService.subscribeToMessaging());
 
       if (this.messagingService.isSupported) {
         this.messagingService.requestPermission(this.identityConfigService.id);
+        this.subscriptions.push(this.messagingService.subscribeToMessaging());
         this.subscriptions.push(this.messagingService.receiveMessage());
         this.message = this.messagingService.currentMessage;
         console.log('Messaging is supported!!!');
@@ -53,6 +53,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public showAddHomePagePopup() {
     this.pwaService.showAddHomePagePopup();
+  }
+
+  public deleteToken() {
+    this.messagingService.deleteToken();
+  }
+
+  public test() {
+    this.messagingService.test();
   }
 
   public get isIdentityConfigInitialized() {
