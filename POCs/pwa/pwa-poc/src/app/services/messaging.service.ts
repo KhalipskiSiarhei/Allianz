@@ -4,11 +4,17 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { firebase } from '@firebase/app';
+import '@firebase/messaging';
 
 @Injectable()
 export class MessagingService {
 
   public currentMessage = new BehaviorSubject(null);
+
+  public get isSupported(): boolean {
+    return firebase && firebase.messaging.isSupported();
+  }
 
   constructor(
     private angularFireDB: AngularFireDatabase,
@@ -66,7 +72,6 @@ export class MessagingService {
     return this.angularFireMessaging.messages.subscribe(
       (payload) => {
         console.log('New message received', payload);
-        alert(payload);
         this.currentMessage.next(payload);
       });
   }

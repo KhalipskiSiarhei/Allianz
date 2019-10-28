@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PwaService } from './services/pwa.service';
 import { IdentityConfigService } from './services/identity-config.service';
 import { MessagingService } from './services/messaging.service';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public title = 'pwa-poc!!!';
-  public message;
+  public message: Observable<any>;
   private subscriptions: Subscription[] = [];
 
   constructor(private router: Router,
@@ -29,9 +29,14 @@ export class AppComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.pwaService.subscribeToAppInstalled());
       this.subscriptions.push(this.messagingService.subscribeToMessaging());
 
-      this.messagingService.requestPermission(this.identityConfigService.id);
-      this.subscriptions.push(this.messagingService.receiveMessage());
-      this.message = this.messagingService.currentMessage;
+      if (this.messagingService.isSupported) {
+        this.messagingService.requestPermission(this.identityConfigService.id);
+        this.subscriptions.push(this.messagingService.receiveMessage());
+        this.message = this.messagingService.currentMessage;
+        console.log('Messaging is supported!!!');
+      } else {
+        console.log('Messaging is NOT supported...');
+      }
     } else {
       this.router.navigate(['/not-found']);
     }
