@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to PWA POC-1!
+    Welcome to PWA POC!
   </h1>
   <p *ngIf="pwaService.isPwaSupported() && (pwaService.isAppInstallable | async)">
     <button (click)="showAddHomePagePopup()">Install PWA!</button>
