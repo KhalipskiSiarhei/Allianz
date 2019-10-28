@@ -50,8 +50,8 @@ const messaging = firebase.messaging();
 // });
 
 // self.addEventListener('notificationclick', function(event) {
-//  // do what you want
-//  // ...
+// do what you want
+// ...
 // });
 
 // Handle incoming messages. Called when:
