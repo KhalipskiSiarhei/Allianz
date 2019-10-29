@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class IdentityConfigService {
-    private vendorSrc: string;
+    private partnerSrc: string;
     private countrySrc: string;
     private policyIdSrc: string;
     private initSrc: boolean;
@@ -14,9 +14,9 @@ export class IdentityConfigService {
         return this.initSrc;
     }
 
-    public get vendor(): string {
+    public get partner(): string {
         if (this.initialized) {
-            return this.vendorSrc;
+            return this.partnerSrc;
         }
         return null;
     }
@@ -37,14 +37,14 @@ export class IdentityConfigService {
 
     public get baseHref(): string {
         if (this.initialized) {
-            return `/${this.vendor}/${this.country}/${this.policyIdSrc}/`;
+            return `/${this.partner}/${this.country}/${this.policyIdSrc}/`;
         }
         return null;
     }
 
     public get id(): string {
         if (this.initialized) {
-            return `${this.vendor}:${this.country}:${this.policyIdSrc}`;
+            return `${this.partner}:${this.country}:${this.policyIdSrc}`;
         }
         return null;
     }
@@ -53,7 +53,7 @@ export class IdentityConfigService {
         const paths: string[] = document.location.pathname.split('/').filter(p => p);
 
         if (paths.length >= 3) {
-          this.vendorSrc = paths[0];
+          this.partnerSrc = paths[0];
           this.countrySrc = paths[1];
           this.policyIdSrc = paths[2];
           this.initSrc = true;

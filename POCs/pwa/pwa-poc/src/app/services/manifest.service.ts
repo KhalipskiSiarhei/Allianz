@@ -19,7 +19,7 @@ export class ManifestService {
         if (manifestElement) {
             const jsonManifest = {
                 gcm_sender_id: '103953800507',
-                name: `${this.identifyConfigService.vendor}-${this.identifyConfigService.country}-${this.identifyConfigService.policyId}`,
+                name: `${this.identifyConfigService.partner}-${this.identifyConfigService.country}-${this.identifyConfigService.policyId}`,
                 short_name: this.identifyConfigService.policyId,
                 theme_color: '#1976d2',
                 background_color: '#fafafa',

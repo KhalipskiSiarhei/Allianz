@@ -11,7 +11,7 @@ import { Subscription, BehaviorSubject, Observable } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public vendor = '';
+  public partner = '';
   public country = '';
   public policyId = '';
   public message: Observable<any>;
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.identityConfigService.initialized) {
-      this.vendor = this.identityConfigService.vendor;
+      this.partner = this.identityConfigService.partner;
       this.country = this.identityConfigService.country;
       this.policyId = this.identityConfigService.policyId;
 
