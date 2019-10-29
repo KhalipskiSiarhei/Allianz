@@ -90,8 +90,4 @@ export class MessagingService {
         this.currentMessage.next(payload);
       });
   }
-
-  public test() {
-    this.currentMessage.next(Date.now().toString());
-  }
 }

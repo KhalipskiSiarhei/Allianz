@@ -1,11 +1,11 @@
 {
-  "name": "pwa-poc-1",
-  "short_name": "pwa-poc-1",
+  "name": "AirFrance-Italy-123",
+  "short_name": "123",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/airfrance/italy/123",
+  "start_url": "/airfrance/italy/123/home?utm_source=home",
   "description": "Alianz PWA app",
   "icons": [
     {

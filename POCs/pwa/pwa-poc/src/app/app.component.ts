@@ -11,7 +11,9 @@ import { Subscription, BehaviorSubject, Observable } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public title = 'pwa-poc!!!';
+  public vendor = '';
+  public country = '';
+  public policyId = '';
   public message: Observable<any>;
   private subscriptions: Subscription[] = [];
 
@@ -23,6 +25,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.identityConfigService.initialized) {
+      this.vendor = this.identityConfigService.vendor;
+      this.country = this.identityConfigService.country;
+      this.policyId = this.identityConfigService.policyId;
+
       this.subscriptions.push(this.pwaService.subscribeToPromt());
       this.subscriptions.push(this.pwaService.subscribeToCheckForUpdates());
       this.subscriptions.push(this.pwaService.subscribeToManageNewAvailableVersions());
@@ -53,14 +59,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public showAddHomePagePopup() {
     this.pwaService.showAddHomePagePopup();
-  }
-
-  public deleteToken() {
-    this.messagingService.deleteToken();
-  }
-
-  public test() {
-    this.messagingService.test();
   }
 
   public get isIdentityConfigInitialized() {

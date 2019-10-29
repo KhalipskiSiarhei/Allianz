@@ -1,16 +1,13 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to PWA POC!
+    Welcome to POC!
+    {{vendor}}
+    {{country}}
+    {{policyId}}
   </h1>
   <p *ngIf="pwaService.isPwaSupported() && (pwaService.isAppInstallable | async)">
     <button (click)="showAddHomePagePopup()">Install PWA!</button>
-  </p>
-  <p *ngIf="!!messagingService.token">
-      <button (click)="deleteToken()">Delete push token</button>
-  </p>
-  <p>
-      <button (click)="test()">Test</button>
   </p>
 </div>
 <nav *ngIf="isIdentityConfigInitialized">

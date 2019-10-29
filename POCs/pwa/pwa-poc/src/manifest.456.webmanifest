@@ -1,11 +1,11 @@
 {
-  "name": "pwa-poc-2",
-  "short_name": "pwa-poc-2",
+  "name": "Belavia-Russian-456",
+  "short_name": "456",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/belavia/russian/456",
+  "start_url": "/belavia/russian/456/home?utm_source=home",
   "description": "Alianz PWA app",
   "icons": [
     {

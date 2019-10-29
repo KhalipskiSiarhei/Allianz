@@ -14,7 +14,7 @@ export class ManifestService {
 
     public injectManifest() {
       if (this.identifyConfigService.initialized) {
-        const manifestElement = this.document.getElementById('manifest.webmanifest');
+        const manifestElement = null; // this.document.getElementById('manifest.webmanifest');
 
         if (manifestElement) {
             const jsonManifest = {
