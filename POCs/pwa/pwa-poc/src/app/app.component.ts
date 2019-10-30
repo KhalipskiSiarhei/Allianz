@@ -4,6 +4,7 @@ import { PwaService } from './services/pwa.service';
 import { IdentityConfigService } from './services/identity-config.service';
 import { MessagingService } from './services/messaging.service';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(private router: Router,
+              private titleService: Title,
               public pwaService: PwaService,
               private identityConfigService: IdentityConfigService,
               public messagingService: MessagingService) {
@@ -25,6 +27,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.identityConfigService.initialized) {
+      // tslint:disable-next-line: max-line-length
+      this.titleService.setTitle(`${this.identityConfigService.partner} - ${this.identityConfigService.country} - ${this.identityConfigService.policyId}`);
+
       this.partner = this.identityConfigService.partner;
       this.country = this.identityConfigService.country;
       this.policyId = this.identityConfigService.policyId;

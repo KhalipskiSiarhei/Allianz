@@ -12,6 +12,18 @@ export class ManifestService {
     constructor(private identifyConfigService: IdentityConfigService, @Inject(DOCUMENT) private document: Document) {
     }
 
+    public setManifest() {
+      if (this.identifyConfigService.initialized) {
+        const manifestElement = this.document.getElementById('manifest.webmanifest');
+
+        if (manifestElement) {
+          // tslint:disable-next-line: max-line-length
+          const manifestHref = `/manifest.${this.identifyConfigService.partner}.${this.identifyConfigService.country}.${this.identifyConfigService.policyId}.webmanifest`;
+          manifestElement.setAttribute('href', manifestHref);
+        }
+      }
+    }
+
     public injectManifest() {
       if (this.identifyConfigService.initialized) {
         const manifestElement = null; // this.document.getElementById('manifest.webmanifest');

@@ -22,8 +22,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.123.webmanifest",
-              "src/manifest.456.webmanifest",
+              "src/manifest.airfrance.italy.123.webmanifest",
+              "src/manifest.belavia.russian.456.webmanifest",
               "src/firebase-messaging-sw.js",
               "src/ngsw-fcm-worker.js"
             ],

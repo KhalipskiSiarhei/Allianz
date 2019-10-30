@@ -99,6 +99,8 @@ export class PwaService {
             if (this.isPwaSupported()) {
                 return fromEvent(document.defaultView, 'appinstalled')
                     .subscribe(event => {
+                        // tslint:disable-next-line: max-line-length
+                        alert('App is installing! Please, open the installed app to activate it. To do it just run it from the home screen. Without activation you will not be able to get all features');
                         console.log('appinstalled!!!');
                     });
             } else {

@@ -17,7 +17,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 export function initApp(identityConfigService: IdentityConfigService, manifestService: ManifestService, document: Document) {
   if (identityConfigService.init(document)) {
-    manifestService.injectManifest();
+    // manifestService.injectManifest();
+    manifestService.setManifest();
   }
 
   return () => {

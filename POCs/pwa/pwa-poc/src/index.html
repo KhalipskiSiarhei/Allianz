@@ -7,26 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" id="manifest.webmanifest">
-  <script>
-    function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
-
-    var manifestElement = document.getElementById('manifest.webmanifest');
-    var manifestType = getParameterByName('manifest');
-
-    if (manifestType == '1') {
-      manifestElement.setAttribute('href', 'manifest.123.webmanifest');
-    } else {
-      manifestElement.setAttribute('href', 'manifest.456.webmanifest');
-    }
-  </script>
   <!-- It is important to have these settings in html for IOS -->
   <link rel="apple-touch-icon" sizes="72x72" href="assets/icons/icon-72x72.png">
   <link rel="apple-touch-icon" sizes="96x96" href="assets/icons/icon-96x96.png">
